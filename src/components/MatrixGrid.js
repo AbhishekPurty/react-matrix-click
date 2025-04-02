@@ -7,19 +7,22 @@ export default function MatrixGrid() {
   const [colors, setColors] = useState(Array(size * size).fill("white"));
 
   const handleClick = (index) => {
-    if (!clickedOrder.includes(index)) {
-      setClickedOrder((prev) => [...prev, index]);
-      setColors((prev) => {
-        const newColors = [...prev];
-        newColors[index] = "green";
-        return newColors;
+      setClickedOrder((prevOrder) => {
+        if (prevOrder.includes(index)) return prevOrder
+        const newOrder = [...prevOrder, index];
+        
+        setColors((prev) => {
+          const newColors = [...prev];
+          newColors[index] = "green";
+          return newColors;
+        });
+        
+        if (newOrder.length === size * size) {
+          changeToOrange(newOrder);
+        }
+        return newOrder;
       });
-    }
-    
-    if (clickedOrder.length + 1 === size * size) {
-      changeToOrange([...clickedOrder, index]);
-    }
-  };
+    };
 
   const changeToOrange = (order) => {
     order.forEach((idx, i) => {
